@@ -86,9 +86,58 @@ sbatch --cpus-per-task=5 submit_cpu_job.sbatch
 You can change `--cpus-per-task` option in sbatch file to increase cpu number as well. Now the result should be around 10 seconds. 
 
 ## Submit gpu jobs
+Now we test to accelerate code using gpu. I re-implement the previous code using [cupy](https://github.com/cupy/cupy).
+```
+import cupy as cp
+import time
+
+def cal_inverse(A):
+    return cp.linalg.inv(A)
+
+
+if __name__ == "__main__":
+    N = 5000 # size
+    A = cp.random.rand(N, N)
+    cp.cuda.Stream.null.synchronize()
+    time_start = time.time()
+    A_inv = cal_inverse(A)
+    cp.cuda.Stream.null.synchronize()
+    time_end = time.time()
+
+    elapsed_time = time_end - time_start  
+    print('{:.5f} sec'.format(elapsed_time))
+```
+The batch file should be changed to `submit_gpu_job.sbatch` so that it uses gpus
+
+```
+#!/bin/bash
+#SBATCH --job-name=gpujob
+#SBATCH --output=gpu_job.%A.out
+#SBATCH --time=0-1:00
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=4000
+#SBATCH --partition=gpu --gres=gpu:gtx1080:1
+
+#module avail
+#printenv
+source ~/.bash_profile  # for pyenv
+module load cuda/10.1
+
+
+cd ~/SLRUM-pyenv-handson/
+srun python -u mat_inv_gpu.py
+```
+The information of specifying gpu versions can be found in [SWC computation wiki](https://wiki.ucl.ac.uk/display/SSC/High-Performance+Computing).
+
+You can submit a job by running
+```
+sbatch submit_gpu_job.sbatch
+```
 
 
 ## Reference
-- More Detailed Introduction to SLURM: (https://github.com/jamenendez11/Gatsby-Cluster-Tutorial)  
-- pyenv github page (https://github.com/pyenv/pyenv)
-- pyenv-virtualenv github page (https://github.com/pyenv/pyenv-virtualenv)
+- [More Detailed Introduction to SLURM](https://github.com/jamenendez11/Gatsby-Cluster-Tutorial)  
+- [SWC computation wiki](https://wiki.ucl.ac.uk/display/SSC/High-Performance+Computing)
+- [pyenv github page](https://github.com/pyenv/pyenv)
+- [pyenv-virtualenv github page](https://github.com/pyenv/pyenv-virtualenv)
