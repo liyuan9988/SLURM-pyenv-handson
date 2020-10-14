@@ -36,8 +36,56 @@ pip install -r requirements.txt
 
 ## Submit multi-cpu jobs
 
+Here, we test running code with SLURM. I prepare the code to calculate the inverse of a large random matrix:
+
+```[python]
+import numpy as np
+import time
+
+def cal_inverse(A):
+    return np.linalg.inv(A)
 
 
+if __name__ == "__main__":
+    N = 5000 # size
+    A = np.random.rand(N, N)
+    time_start = time.time()
+    A_inv = cal_inverse(A)
+    time_end = time.time()
+
+    elapsed_time = time_end - time_start  
+    print('{:.5f} sec'.format(elapsed_time))
+```
+This is implemented in `mat_inv_cpu.py`. We can submit a job to SLURM by writing the following batch file `submit_cpu_job.sbatch`
+
+```
+#!/bin/bash
+#SBATCH --job-name=cpujob_test
+#SBATCH --output=cpu_job.%A.out
+#SBATCH --time=0-1:00
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=4000
+#SBATCH --partition=cpu
+
+#module avail
+#printenv
+source ~/.bash_profile  # activate pyenv
+
+cd ~/SLRUM-pyenv-handson/
+srun python -u mat_inv_cpu.py
+```
+Refer to [detailed introduction page](https://github.com/jamenendez11/Gatsby-Cluster-Tutorial) for the meaning of each options. We can submit the job by running
+```
+sbatch submit_cpu_job.sbatch
+```
+The text output will be found `cpu_job.%A.out` with `%A` replaced with the job number assigned to this job. The result should be around 14 seconds. Now, we can increase the number of cpus by
+```
+sbatch --cpus-per-task=5 submit_cpu_job.sbatch
+```
+You can change `--cpus-per-task` option in sbatch file to increase cpu number as well. Now the result should be around 10 seconds. 
+
+## Submit gpu jobs
 
 
 ## Reference
