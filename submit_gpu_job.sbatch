@@ -9,8 +9,9 @@
 
 #module avail
 #printenv
-source ~/.bash_profile  # for pyenv
 module load cuda/10.1
+source ~/.bash_profile  # for pyenv
+
 
 
 cd ~/SLURM-pyenv-handson/
