@@ -85,7 +85,8 @@ sbatch --cpus-per-task=5 submit_cpu_job.sbatch
 ```
 You can change `--cpus-per-task` option in sbatch file to increase cpu number as well. Now the result should be around 10 seconds. 
 
-## Submit gpu jobs
+## Submit gpu jobs (NOT TESTED YET)
+
 Now we test to accelerate code using gpu. I re-implement the previous code using [cupy](https://github.com/cupy/cupy).
 ```
 import cupy as cp
