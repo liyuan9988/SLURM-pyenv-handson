@@ -11,5 +11,5 @@
 #printenv
 source ~/.bash_profile  # activate pyenv
 
-cd ~/SLRUM-pyenv-handson/
+cd ~/SLURM-pyenv-handson/
 srun python -u mat_inv_cpu.py

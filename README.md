@@ -72,7 +72,7 @@ This is implemented in `mat_inv_cpu.py`. We can submit a job to SLURM by writing
 #printenv
 source ~/.bash_profile  # activate pyenv
 
-cd ~/SLRUM-pyenv-handson/
+cd ~/SLURM-pyenv-handson/
 srun python -u mat_inv_cpu.py
 ```
 Refer to [detailed introduction page](https://github.com/jamenendez11/Gatsby-Cluster-Tutorial) for the meaning of each options. We can submit the job by running
@@ -117,7 +117,7 @@ The batch file should be changed to `submit_gpu_job.sbatch` so that it uses gpus
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=4000
-#SBATCH --partition=gpu --gres=gpu:gtx1080:1
+#SBATCH --partition=gpu --gres=gpu:1
 
 #module avail
 #printenv
@@ -125,7 +125,7 @@ source ~/.bash_profile  # for pyenv
 module load cuda/10.1
 
 
-cd ~/SLRUM-pyenv-handson/
+cd ~/SLURM-pyenv-handson/
 srun python -u mat_inv_gpu.py
 ```
 The information of specifying gpu versions can be found in [SWC computation wiki](https://wiki.ucl.ac.uk/display/SSC/High-Performance+Computing).
