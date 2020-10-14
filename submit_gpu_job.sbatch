@@ -5,7 +5,7 @@
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=4000
-#SBATCH --partition=gpu --gres=gpu:1
+#SBATCH --partition=gpu --gres=gpu:gtx1080:1
 
 #module avail
 #printenv
