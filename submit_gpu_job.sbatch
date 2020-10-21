@@ -9,10 +9,10 @@
 
 #module avail
 #printenv
-module load cuda/10.1
-source ~/.bash_profile  # for pyenv
+module load nvidia/10.1
 
-
+# export MODULEPATH="$MODULEPATH:/nfs/apps/Modules/modulefiles"
+# Uncomment above if module loading fails
 
 cd ~/SLURM-pyenv-handson/
 srun python -u mat_inv_gpu.py

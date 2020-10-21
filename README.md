@@ -85,7 +85,7 @@ sbatch --cpus-per-task=5 submit_cpu_job.sbatch
 ```
 You can change `--cpus-per-task` option in sbatch file to increase cpu number as well. Now the result should be around 10 seconds. 
 
-## Submit gpu jobs (NOT TESTED YET)
+## Submit gpu jobs
 
 Now we test to accelerate code using gpu. I re-implement the previous code using [cupy](https://github.com/cupy/cupy).
 ```
@@ -110,7 +110,6 @@ if __name__ == "__main__":
 ```
 The batch file should be changed to `submit_gpu_job.sbatch` so that it uses gpus
 
-```
 #!/bin/bash
 #SBATCH --job-name=gpujob
 #SBATCH --output=gpu_job.%A.out
@@ -118,18 +117,17 @@ The batch file should be changed to `submit_gpu_job.sbatch` so that it uses gpus
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=4000
-#SBATCH --partition=gpu --gres=gpu:gpu:gtx1080:1
+#SBATCH --partition=gpu --gres=gpu:gtx1080:1
 
 #module avail
 #printenv
-module load cuda/10.1
-source ~/.bash_profile  # for pyenv
+module load nvidia/10.1
 
-
+# export MODULEPATH="$MODULEPATH:/nfs/apps/Modules/modulefiles"
+# Uncomment above if module loading fails
 
 cd ~/SLURM-pyenv-handson/
 srun python -u mat_inv_gpu.py
-```
 The information of specifying gpu versions can be found in [SWC computation wiki](https://wiki.ucl.ac.uk/display/SSC/High-Performance+Computing).
 
 You can submit a job by running

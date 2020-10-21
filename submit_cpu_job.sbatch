@@ -9,7 +9,6 @@
 
 #module avail
 #printenv
-source ~/.bash_profile  # activate pyenv
 
 cd ~/SLURM-pyenv-handson/
 srun python -u mat_inv_cpu.py
